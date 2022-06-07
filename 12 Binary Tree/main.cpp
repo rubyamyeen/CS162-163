@@ -18,6 +18,8 @@ using namespace std;
 BNode* add(BNode* head, int data);
 BNode* remove(BNode* head, int data);
 BNode* minValueNode(BNode* node);
+void leafCount(BNode* head, int& data);
+void totalNodes(BNode* head, int& count);
 int search(BNode* head, int data);
 void printTree(BNode* head, int depth);
 
@@ -70,6 +72,9 @@ int main() {
 
     //add
     if (strcmp(input, "ADD") == 0) {
+      int count = 0;
+      totalNodes(head, count);
+      cout << count << endl;
       int data = 0;
       cout << "Enter a integer to insert:" << endl;
       cin >> data;
@@ -231,4 +236,26 @@ BNode* remove(BNode* head, int data) {
     
   }
   return head;
+}
+
+
+void leafCount(BNode* head, int& count) {
+  if (head == NULL) {
+    return;
+  } else if (head->getLeft() == NULL && head->getRight() == NULL) {
+    //leaf
+    count++;
+    return;
+  }
+  leafCount(head->getLeft(), count);
+  leafCount(head->getRight(), count);
+}
+
+void totalNodes(BNode* head, int& count) {
+  if (head == NULL) {
+    return;
+  }
+    count++;
+  totalNodes(head->getLeft(), count);
+  totalNodes(head->getRight(), count);
 }
