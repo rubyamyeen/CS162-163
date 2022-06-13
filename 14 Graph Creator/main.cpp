@@ -11,6 +11,8 @@
 
 using namespace std;
 
+//function prototypes
+int findIndex(char v, char vertices[], int vCount);
 int main() {
   //variables
   int graph[20][20];
@@ -27,69 +29,51 @@ int main() {
     }
   }
   cout << "For this program the commands are:\n"
-       << "AV to add a vertex\n"
-       << "AE to add a edge\n"
-       << "RV to remove a vertex\n"
-       << "RE to remove a edge\n"
-       << "SP to find shortest path\n"
-       << "PRINT to print\n"
-       << "QUIT to exit the program"
+       << "addV: to add a vertex\n"
+       << "addE: to add a edge\n"
+       << "removeV: to remove a vertex\n"
+       << "removeE: to remove a edge\n"
+       << "shortPath: to find shortest path\n"
+       << "print: to print\n"
+       << "quit: to exit the program\n"
        << endl;
   while (stillRunning == true) {
-    cout << "Please enter a command:" << endl;
+    cout << "Enter a command: ";
     cin >> input;
+    //cout << endl;
 
     //add vertex
-    if (strcmp(input, "AV") == 0) {
-      cout << "Enter a label for a vertex (ex: A):"  << endl;
+    if (strcmp(input, "addV") == 0) {
+      cout << "Enter a label for a vertex (ex: A):" << endl;
       cin >> vertices[vCount];
       vCount++;
       
     // add edge
-    } else if (strcmp(input, "AE") == 0) {
+    } else if (strcmp(input, "addE") == 0) {
       //vars
       char v1;
       char v2;
-      bool used = false;
-      bool used2 = false;
-      int vIndex1 = 0;
-      int vIndex2 = 0;
       int weight = 0;
       
       cout << "Enter the two vertices you want to connect (ex: A B):" << endl;
       cin >> v1;
       cin >> v2;
-
-
-      //check if vertices are in the matrix
-      if (v1 != v2) {
-	for (int i = 0; i < vCount; i++) {
-	  if (vertices[i] == v1) {
-	    used = true;
-	    vIndex1 = i;
-	  } else if (vertices[i] == v2) {
-	    used2 = true;
-	    vIndex2 = i;
-	  }
-	}
-      }
-
-      if (used == true && used2 == true) {
-	cout << "Enter a weight value:" << endl;
-	cin >> weight;
-	graph[vIndex1][vIndex2] = weight;
+      
+      if (v1 == v2 || findIndex(v1, vertices, vCount) == -1 || findIndex(v2, vertices, vCount) == -1) {
+	cout << "Invalid input" << endl;
 	
       } else {
-	cout << "Invalid input" << endl;
+	cout << "Enter the weight value:" << endl;
+	cin >> weight;
+	graph[findIndex(v1, vertices, vCount)][findIndex(v2, vertices, vCount)] = weight;
       }
-
       
     //remove vertex
     //https://stackoverflow.com/questions/879603/remove-an-array-element-and-shift-the-remaining-ones
-    } else if (strcmp(input, "RV") == 0) {
+    } else if (strcmp(input, "removeV") == 0) {
       bool used = false;
       char v;
-      cout << "Enter a vertex to remove" << endl;
+      cout << "Enter a vertex to remove:" << endl;
       cin >> v;
       //check if inside the matrix
       for (int i = 0; i < 20; i++) {
@@ -111,44 +95,31 @@ int main() {
 	  vCount--;
 	}
       }
+      if (used == false) {
+	cout << "Invalid input" << endl;
+      }
       
     //remove edge 
-    } else if (strcmp(input, "RE") == 0) {
+    } else if (strcmp(input, "removeE") == 0) {
+      //vars
       char v1;
       char v2;
-      bool used = false;
-      bool used2 = false;
-      int vIndex1 = 0;
-      int vIndex2 = 0;
+      int weight = 0;
       
       cout << "Enter two vertices to remove the edge between them (ex: A B):" << endl;
       cin >> v1;
       cin >> v2;
-
-
-      //check if vertices are in the matrix
-      if (v1 != v2) {
-	for (int i = 0; i < vCount; i++) {
-	  if (vertices[i] == v1) {
-	    used = true;
-	    vIndex1 = i;
-	  } else if (vertices[i] == v2) {
-	    used2 = true;
-	    vIndex2 = i;
-	  }
-	}
-      }
-
-      if (used == true && used2 == true) {
-	//remove edge
-	graph[vIndex1][vIndex2] = 0;
+      
+      if (v1 == v2 || findIndex(v1, vertices, vCount) == -1 || findIndex(v2, vertices, vCount) == -1) {
+	cout << "Invalid input" << endl;
 	
       } else {
-	cout << "Invalid input" << endl;
+	graph[findIndex(v1, vertices, vCount)][findIndex(v2, vertices, vCount)] = 0;
       }
       
+      
     //print (Referenced Fiona Wang's code)
-    } else if (strcmp(input, "PRINT") == 0) {
+    } else if (strcmp(input, "print") == 0) {
 
       //no vertices
       if (vCount == 0) {
@@ -174,13 +145,22 @@ int main() {
       }
  
     //shortest path
-    } else if (strcmp(input, "SP") == 0) {
+    } else if (strcmp(input, "shortPath") == 0) {
 
     //quit
-    } else if (strcmp(input, "QUIT") == 0) {
+    } else if (strcmp(input, "quit") == 0) {
       stillRunning = false;
     }
   }
   
   return 0;
+}
+
+int findIndex(char v, char vertices[], int vCount) {
+  for (int i = 0; i < vCount; i++) {
+    if (vertices[i] == v) {
+      return i;
+    }
+  }
+  return -1;
 }
