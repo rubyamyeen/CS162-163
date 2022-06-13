@@ -1,0 +1,92 @@
+/*
+ * This program creates a directed graph with weighted edges that are represented in a adjacency matrix
+ * The user can add and remove vertexes and edges. 
+ * They will also be able to calculate the shortest path with Dijkstra's algorithm.
+ * Author: Ruby Amyeen
+ * Date: 6/7/22
+ */
+
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+int main() {
+  //variables
+  int graph[20][20];
+  char vertices[20];
+  int vCount = 0;
+  bool stillRunning = true;
+  char input[20];
+
+  //emptying the matrix
+  for (int i = 0; i < 20; i++) {
+    vertices[i] = '\0';
+    for (int j = 0; j < 20; j++) {
+      graph[i][j] = 0;
+    }
+  }
+
+  while (stillRunning == true) {
+    cout << "Please enter: 'addvertex', 'addedge', "
+	 << "'removevertex', 'removeedge', 'print', or 'quit'" << endl;
+    cin >> input;
+
+    //add vertex
+    if (strcmp(input, "addvertex") == 0) {
+      cout << "Enter a label for a vertext (ex: A, B)"  << endl;
+      cin >> vertices[vCount];
+      vCount++;
+      for (int i = 0; i < vCount; i++) {
+	cout << vertices[i] << endl;
+      }
+    // add edge
+    } else if (strcmp(input, "addedge") == 0) {
+
+    //remove vertex
+    } else if (strcmp(input, "removevertex") == 0) {
+
+      
+    //remove edge 
+    } else if (strcmp(input, "removeedge") == 0) {
+
+
+      
+    //print (Referenced Fiona Wang's code)
+    } else if (strcmp(input, "print") == 0) {
+
+      //no vertices
+      if (vCount == 0) {
+	cout << "Graph is empty!";
+	
+      // print
+      } else {
+	//prints first row of labels
+	for (int i = 0; i < 20; i++){
+	  if (vertices[i]){
+	    cout << "\t" << vertices[i];
+	  }
+	}
+	cout << endl;
+	//prints out the label and its corresponding edges
+	for (int i = 0; i < 20; i++) {
+	  if (vertices[i] != '\0') {
+	    cout << vertices[i] << "\t";
+	    for (int j = 0; j < 20; j++){
+	      if (j < vCount) {
+		cout << graph[j][i] << "\t";
+	      }
+	    }
+	    cout << endl;
+	  }
+	}
+      }
+ 
+    //quit
+    } else if (strcmp(input, "quit") == 0) {
+      stillRunning = false;
+    }
+  }
+  
+  return 0;
+}
